@@ -1,3 +1,18 @@
 <p>loaded addresses.hbs</p>
 
+<table style="border: 1px solid #444;">
+	<tr>
+		<th>addressee</th>
+		<th>zip</th>
+	</tr>
+
+{{#each model as |address|}}
+	<tr>
+		<td>{{#link-to 'address' address}}{{address.addressee}}{{/link-to}}</td>
+		<td>{{#link-to 'address' address}}{{address.zip}}{{/link-to}}</td>
+	</tr>
+{{/each}}
+
+</table>
+
 {{outlet}}

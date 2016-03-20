@@ -6,9 +6,9 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('addresses');
-  this.route('address');
-  this.route('add-address');
+	this.route('addresses')
+	this.route('address', {path: '/addresses/:address_id'});
+	this.route('add-address');
 });
 
 export default Router;
