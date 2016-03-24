@@ -12,6 +12,8 @@
 		{{address.line2}}<br>
 		{{address.city}} &nbsp;{{address.state}} &nbsp;{{address.zip}}
     </p>
+  </div>
+  <div class="card-block text-right">
     <button class="btn-default" {{action "editAddress" address}}>edit</button> &nbsp; 
     <button class="btn-danger" {{action "deactivateAddress" address}}>delete</button>
   </div>
