@@ -1,5 +1,5 @@
 body {
-  padding-top: 51px;  
+  padding-top: 51px;
 }
 .text-center {
   padding-top: 20px;
@@ -19,7 +19,11 @@ body {
   border:0 #f2f2f2 solid;
   border-bottom-width:1px;
 }
-
+.card {
+  display: inline-block;
+  width: 30%;
+  border: 1px solid #ddd;
+}
 /* collapsed sidebar styles */
 @media screen and (max-width: 767px) {
   .row-offcanvas {

@@ -1,21 +1,26 @@
-<p>loaded addresses.hbs</p>
-
-<table style="border: 1px solid #444;">
-	<tr>
-		<th>addressee</th>
-		<th>zip</th>
-	</tr>
+<div class="row">
+  <div class="col-xs-12">
 
 {{#each model as |address|}}
 	{{#if address.isActive}}
-	<tr>
-		<td>{{#link-to 'address' address}}{{address.addressee}}{{/link-to}}</td>
-		<td>{{address.zip}}</td>
-		<td><button {{action "deactivateAddress" address}}>x</button></td>
-	</tr>
+
+<div class="card">
+  <div class="card-block">
+    <h4 class="card-title">{{address.addressee}}</h4>
+    <p class="card-text">
+		{{address.line1}}<br>
+		{{address.line2}}<br>
+		{{address.city}} &nbsp;{{address.state}} &nbsp;{{address.zip}}
+    </p>
+    <button class="btn-default" {{action "editAddress" address}}>edit</button> &nbsp; 
+    <button class="btn-danger" {{action "deactivateAddress" address}}>delete</button>
+  </div>
+</div>
+
 	{{/if}}
 {{/each}}
 
-</table>
+  </div>
+</div>
 
 {{outlet}}
