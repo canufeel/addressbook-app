@@ -6,6 +6,10 @@ module.exports = function(environment) {
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
+    emberPouch: {
+      localDb: 'dentone-addressbook-local',
+      remoteDB: 'https://mowadmin:gtbkCosP3qfcqwoN9bT2@mowadmin.cloudant.com/dentone-addressbook'
+    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build

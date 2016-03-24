@@ -2,6 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
 	model() {
+		return this.store.findAll('address');
+		/*
 		return [
 			{
 				id: "1",
@@ -31,6 +33,7 @@ export default Ember.Route.extend({
 			}		
 
 		];
+		*/
 	}
 
 });
