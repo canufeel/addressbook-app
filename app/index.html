@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html manifest="cache.manifest">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,18 +7,55 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <script type="text/javascript">
+        window.addEventListener('load', function(e){
+          window.applicationCache.addEventListener('updateready', function(e){
+            if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+              window.applicationCache.swapCache();
+              window.location.reload();
+            }
+          }, false);  
+        }, false);
+    </script>
+
     {{content-for "head"}}
 
     <link rel="stylesheet" href="assets/vendor.css">
     <link rel="stylesheet" href="assets/addressbook-app.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
     {{content-for "head-footer"}}
+
   </head>
   <body>
+
+
+<div class="page-container">
+  
+  <!-- top navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+       <div class="container">
+      <div class="navbar-header">
+           <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+           </button>
+           <a class="navbar-brand" href="#">Dentone Addressbook v2</a>
+      </div>
+       </div>
+    </div>
+      
+    <div class="container">
+
     {{content-for "body"}}
+
+  </div><!--/.container-->
+</div><!--/.page-container-->
 
     <script src="assets/vendor.js"></script>
     <script src="assets/addressbook-app.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     {{content-for "body-footer"}}
   </body>
