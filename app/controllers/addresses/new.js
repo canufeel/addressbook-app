@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
     actions: {  
-        save: function() {
+        createAddress: function() {
             var addressee = this.get('addressee');
             var zip= this.get('zip');
             var dateCreated = new Date();
@@ -12,6 +12,7 @@ export default Ember.Controller.extend({
             var address = this.store.createRecord('address', {
                 addressee:addressee,
                 zip:zip,
+                isActive:true,
                 dateCreated:dateCreated
             });
             this.set('addressee','');
@@ -21,7 +22,4 @@ export default Ember.Controller.extend({
 
         }
     }
-
-
-
 });

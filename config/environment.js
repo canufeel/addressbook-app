@@ -8,7 +8,7 @@ module.exports = function(environment) {
     locationType: 'auto',
     emberPouch: {
       localDb: 'dentone-addressbook-local',
-      remoteDB: 'https://mowadmin:gtbkCosP3qfcqwoN9bT2@mowadmin.cloudant.com/dentone-addressbook'
+      remoteDB: 'https://bothentsemetleendishompl@mowadmin.cloudant.com/dentone-addressbook'
     },
     EmberENV: {
       FEATURES: {

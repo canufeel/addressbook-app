@@ -7,10 +7,13 @@
 	</tr>
 
 {{#each model as |address|}}
+	{{#if address.isActive}}
 	<tr>
 		<td>{{#link-to 'address' address}}{{address.addressee}}{{/link-to}}</td>
-		<td>{{#link-to 'address' address}}{{address.zip}}{{/link-to}}</td>
+		<td>{{address.zip}}</td>
+		<td><button {{action "deactivateAddress" address}}>x</button></td>
 	</tr>
+	{{/if}}
 {{/each}}
 
 </table>
