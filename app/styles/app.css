@@ -53,6 +53,10 @@ body {
   }
 }
 
+mark, .mark {
+  background-color: #faf484 !important;
+  background: #faf484 !important;
+}
 
 /* ** bootstrap 3 cards back-ported from boodstrap 4 as seen here:
 http://bootsnipp.com/snippets/featured/material-cards
@@ -64,7 +68,6 @@ http://bootsnipp.com/snippets/featured/material-cards
   border-radius: 2px;
   background-clip: padding-box;
   padding: .25em 1em 1em 1em;
-  width: 27%;
 }
 .card .card-title {
     color: #444;

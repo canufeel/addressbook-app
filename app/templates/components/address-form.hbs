@@ -1,17 +1,54 @@
-
-<form {{action 'createAddress' on="submit"}}>
-<dl>
-<dt>Addressee:<br> {{input name="addressee" value=addressee}}</dt>
-<dt>Sort name:<br> {{input name="sortname" value=sortname}}</dt>
-<dt>Line 1:<br> {{input name="line1" value=line1}}</dt>
-<dt>Line 2:<br> {{input name="line2" value=line2}}</dt>
-<dt>City:<br> {{input name="city" value=city}}</dt>
-<dt>State / Province / Region<br> {{input name="state" value=state}}</dt>
-<dt>Zip / Postcode / Postal Code:<br> {{input name="zip" value=zip}}</dt>
-<dt>Country:<br> {{input name="country" value=country}}</dt>
-</dl>
-<button type="submit" class="btn btn-primary">Add address</button>
+	<div class="form-group">
+		<label for="addressee">Addressee</label>
+		{{input id="addressee" name="addressee" class="form-control" value=address.addressee placeholder="send to whom?"}}
+	</div>
+	<div class="form-group">
+		<label for="sortname">Sort by name</label>
+		{{input id="sortname" name="sortname" class="form-control" value=address.sortname placeholder="usually last-name, first-name"}}
+	</div>
+	<div class="form-group">
+		<label for="line1">Address line 1</label>
+		{{input id="line1" name="line1" class="form-control" value=address.line1 placeholder="first line of address"}}
+	</div>
+	<div class="form-group">
+		<label for="line2">Address line 2</label>
+		{{input id="line2" name="line2" class="form-control" value=address.line2 placeholder="second line of address"}}
+	</div>
+	<div class="form-group">
+		<label for="city">City</label>
+		{{input id="city" name="city" class="form-control" value=address.city placeholder="city"}}
+	</div>
+	<div class="form-group">
+		<label for="state">State / Province / Region</label>
+		{{input id="state" name="state" class="form-control" value=address.state placeholder="state, province, or region"}}
+	</div>
+	<div class="form-group">
+		<label for="zip">Zip / Postcode / Postal Code</label>
+		{{input id="zip" name="zip" class="form-control" value=address.zip placeholder="zip, postcode, or postal code"}}
+	</div>
+	<div class="form-group">
+		<label for="country">Country (2 or 3 letters)</label>
+		{{input id="country" name="country" class="form-control" value=address.country placeholder="country code, for example US or USA"}}
+	</div>
+	<div class="form-group">
+		<label>&nbsp;</label>
+		<div class="row">
+		{{#if address.addressee}}
+			<div class="col-md-4">
+				<button type="submit" class="btn btn-primary btn-lg">Save address</button>
+			</div>
+			<div class="col-md-4 col-md-offset-4 text-right">
+			    <button style="margin-top: 2em;" class="btn btn-danger btn-xs" {{action "deactivateAddress" address}}>deactivate</button>
+	    	</div>
+		{{else}}
+			<div class="col-md-4">
+				<button type="submit" class="btn btn-primary btn-lg">Add address</button>
+			</div>
+		{{/if}}
+	    </div>
+    </div>
 </form>
+
 {{!-- 
 
 <select>

@@ -1,0 +1,5 @@
+<h1>Edit Address for <mark>{{model.addressee}}</mark></h1>
+
+<form {{action 'updateAddress' on="submit"}} class="col-md-6">
+
+{{#address-form address=model}}{{/address-form}}

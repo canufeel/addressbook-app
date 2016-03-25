@@ -1,24 +1,9 @@
-<div class="row">
-  <div class="col-xs-12">
+<div class="container-fluid">
+  <div class="row">
 
 {{#each model as |address|}}
 	{{#if address.isActive}}
-
-<article class="card">
-  <div class="card-block">
-    <h4 class="card-title">{{address.addressee}}</h4>
-    <p class="card-text">
-		{{address.line1}}<br>
-		{{address.line2}}<br>
-		{{address.city}} &nbsp;{{address.state}} &nbsp;{{address.zip}}
-    </p>
-  </div>
-  <div class="card-block text-right">
-    <button class="btn-default" {{action "editAddress" address}}>edit</button> &nbsp; 
-    <button class="btn-delete btn-danger" {{action "deactivateAddress" address}}>delete</button>
-  </div>
-</article>
-
+    {{#address-card address=address}}{{/address-card}}
 	{{/if}}
 {{/each}}
 
