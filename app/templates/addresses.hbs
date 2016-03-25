@@ -4,7 +4,7 @@
 {{#each model as |address|}}
 	{{#if address.isActive}}
 
-<div class="card">
+<article class="card">
   <div class="card-block">
     <h4 class="card-title">{{address.addressee}}</h4>
     <p class="card-text">
@@ -15,9 +15,9 @@
   </div>
   <div class="card-block text-right">
     <button class="btn-default" {{action "editAddress" address}}>edit</button> &nbsp; 
-    <button class="btn-danger" {{action "deactivateAddress" address}}>delete</button>
+    <button class="btn-delete btn-danger" {{action "deactivateAddress" address}}>delete</button>
   </div>
-</div>
+</article>
 
 	{{/if}}
 {{/each}}
