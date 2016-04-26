@@ -1,5 +1,45 @@
 <h1>New Address</h1>
 
-<form {{action 'createAddress' on="submit"}} class="col-md-6">
+<form {{action 'createAddress' model on="submit"}} class="col-md-6">
+	<div class="form-group">
+		<label for="addressee">Addressee</label>
+		{{input id="addressee" name="addressee" class="form-control" value=model.addressee placeholder="send to whom?"}}
+	</div>
+	<div class="form-group">
+		<label for="sortname">Sort by name</label>
+		{{input id="sortname" name="sortname" class="form-control" value=model.sortname placeholder="usually last-name, first-name"}}
+	</div>
+	<div class="form-group">
+		<label for="line1">Address line 1</label>
+		{{input id="line1" name="line1" class="form-control" value=model.line1 placeholder="first line of address"}}
+	</div>
+	<div class="form-group">
+		<label for="line2">Address line 2</label>
+		{{input id="line2" name="line2" class="form-control" value=model.line2 placeholder="second line of address"}}
+	</div>
+	<div class="form-group">
+		<label for="city">City</label>
+		{{input id="city" name="city" class="form-control" value=model.city placeholder="city"}}
+	</div>
+	<div class="form-group">
+		<label for="state">State / Province / Region</label>
+		{{input id="state" name="state" class="form-control" value=model.state placeholder="state, province, or region"}}
+	</div>
+	<div class="form-group">
+		<label for="zip">Zip / Postcode / Postal Code</label>
+		{{input id="zip" name="zip" class="form-control" value=model.zip placeholder="zip, postcode, or postal code"}}
+	</div>
+	<div class="form-group">
+		<label for="country">Country (2 or 3 letters)</label>
+		{{input id="country" name="country" class="form-control" value=model.country placeholder="country code, for example US or USA"}}
+	</div>
 
-{{#address-form}}{{/address-form}}
+	<div class="form-group">
+		<label>&nbsp;</label>
+		<div class="row">
+			<div class="col-md-4">
+				<button type="submit" class="btn btn-primary btn-lg">Add address</button>
+			</div>
+	    </div>
+    </div>
+</form>
