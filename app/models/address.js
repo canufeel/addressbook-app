@@ -3,14 +3,14 @@ import attr from 'ember-data/attr';
 
 export default Model.extend({
 	addressee: attr('string'),
-  sortname: attr('string'),
-	type: attr('string'),
+  sortname: attr('string', {defaultValue:''}),
+	type: attr('string', {defaultValue:''}),
 	line1: attr('string'),
-	line2: attr('string'),
-	city: attr('string'),
-	state: attr('string'), // state, province, or region
-	zip: attr('string'),  // Zip code, postcode, or postal code
-	country: attr('string'), 
+	line2: attr('string', {defaultValue:''}),
+	city: attr('string', {defaultValue:''}),
+	state: attr('string', {defaultValue:''}), // state, province, or region
+	zip: attr('string', {defaultValue:''}),  // Zip code, postcode, or postal code
+	country: attr('string', {defaultValue:''}), 
 	isActive: attr('boolean', { 
 		defaultValue: true 
 	}),

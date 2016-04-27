@@ -34,8 +34,18 @@ export default Ember.Component.extend({
 	filterAddresses(query){
 		let addresses = get(this,'addresses');
 		let filtered = addresses.filter((item)=>{
-			let string = get(item,'addressee');
-			return string.toLowerCase().indexOf(query) !== -1;
+			let filterOut = false;
+			item.eachAttribute(attrName=>{
+				if (!isEqual(attrName,'rev')){
+					let fieldVal = get(item,attrName);
+					if (isEqual(typeof fieldVal,"string")){
+						if (!isEqual(fieldVal.toLowerCase().indexOf(query), -1)){
+							filterOut = true;
+						}
+					}
+				}
+			});
+			return filterOut;
 		});
 		set(this,'_query',query);
 		run.scheduleOnce('actions',this, '_resetAddresses',filtered);
@@ -105,6 +115,8 @@ export default Ember.Component.extend({
 		},
 		deleteAddress(address){
 			address.destroyRecord();
+			let store = get(this,'store');
+			set(this,'_addresses',store.peekAll('address'));
 		},
 		submitEditedAddress(data){
 			let selectedAddress = get(this,'selectedAddress');
