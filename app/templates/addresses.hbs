@@ -1,13 +1,1 @@
-<div class="container-fluid">
-  <div class="row">
-
-{{#each model as |address|}}
-	{{#if address.isActive}}
-    {{#address-card address=address}}{{/address-card}}
-	{{/if}}
-{{/each}}
-
-  </div>
-</div>
-
-{{outlet}}
+{{addresses/address-main addresses=model}}

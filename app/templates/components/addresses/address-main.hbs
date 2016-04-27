@@ -1,0 +1,45 @@
+<div class="addresses-container">
+	{{#liquid-unless mobileToggled class="sidebar-right-mobile"}}
+		{{#paper-card}}
+			{{#paper-card-content}}
+				{{#paper-button onClick=(action "toggleCreateNewAddress") iconButton=true raised=true accent=true disabled=isCreatingAddress}}{{paper-icon "add"}}{{/paper-button}}
+				{{paper-input value=query label="Search" onChange=(action "updateQuery")}}
+			{{/paper-card-content}}
+		{{/paper-card}}
+		{{#paper-card}}
+			{{#paper-card-content}}
+				{{#paper-list}}
+					{{#each addressesFiltered as |address|}}
+						{{#if address.isActive}}
+							{{#paper-item onClick=(action "toggleAddressEdit" address)}}
+								<div class="md-list-item-text">
+									<h3>{{address.addressee}}</h3>
+									<h4>{{address.city}}</h4>
+									<p>{{address.sortname}}</p>
+								</div>
+								{{#paper-button iconButton=true onClick=(action "deleteAddress" address)}}
+									{{paper-icon "delete"}}
+								{{/paper-button}}
+							{{/paper-item}}
+							{{paper-divider}}
+						{{/if}}
+					{{/each}}
+				{{/paper-list}}
+			{{/paper-card-content}}
+		{{/paper-card}}
+	{{else}}
+		{{#if isCreatingAddress}}
+			{{addresses/address-edit create=true cancelAction=(action "toggleCreateNewAddress") createAction=(action "createNewAddress") classNames="addresses-edit"}}
+		{{else}}
+			{{addresses/address-edit address=selectedAddressOneWay create=false cancelAction=(action "toggleAddressEdit") createAction=(action "submitEditedAddress") classNames="addresses-edit"}}
+		{{/if}}
+	{{/liquid-unless}}
+</div>
+{{#unless mobile}}
+	{{#liquid-if isCreatingAddress class="sidebar-right"}}
+		{{addresses/address-edit create=true cancelAction=(action "toggleCreateNewAddress") createAction=(action "createNewAddress") classNames="addresses-edit"}}
+	{{/liquid-if}}
+	{{#liquid-if isEditingAddress class="sidebar-right"}}
+			{{addresses/address-edit address=selectedAddressOneWay create=false cancelAction=(action "toggleAddressEdit") createAction=(action "submitEditedAddress") classNames="addresses-edit"}}
+	{{/liquid-if}}
+{{/unless}}
