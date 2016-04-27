@@ -30,7 +30,7 @@
 	{{else}}
 		{{#if isCreatingAddress}}
 			{{addresses/address-edit create=true cancelAction=(action "toggleCreateNewAddress") createAction=(action "createNewAddress") classNames="addresses-edit"}}
-		{{else}}
+		{{else if isEditingAddress}}
 			{{addresses/address-edit address=selectedAddressOneWay create=false cancelAction=(action "toggleAddressEdit") createAction=(action "submitEditedAddress") classNames="addresses-edit"}}
 		{{/if}}
 	{{/liquid-unless}}
