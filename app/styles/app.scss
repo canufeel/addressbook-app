@@ -20,6 +20,10 @@ $color-grey: map-merge($color-grey, ('contrast':  $light-contrast-color));
 
 }
 
+.search-block {
+	@include display(flex);
+}
+
 .edit-form-content {
 	@include display(flex);
 	@include flex-direction(column);
@@ -27,7 +31,7 @@ $color-grey: map-merge($color-grey, ('contrast':  $light-contrast-color));
 
 .button-container {
 	position: fixed;
-	bottom: 45px;
+	bottom: 25px;
 	right: 70px;
 	height: 48px;
 	width: 48px;

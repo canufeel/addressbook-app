@@ -11,14 +11,14 @@
 <div class="addresses-container">
 	{{#liquid-unless mobileToggled class="sidebar-right-mobile"}}
 		{{#paper-card}}
-			{{#paper-card-content}}
+			{{#paper-card-content classNames="search-block"}}
 				
-				{{paper-input value=query label="Search" onChange=(action "updateQuery")}}
+				{{paper-input value=query label="Search" onChange=(action "updateQuery") flex=1}}
 			{{/paper-card-content}}
 		{{/paper-card}}
 		{{#paper-card}}
 			{{#paper-card-content}}
-				{{#paper-list}}
+				{{#paper-list flex=1}}
 					{{#each addressesFiltered as |address|}}
 						{{#if address.isActive}}
 							{{#paper-item onClick=(action "toggleAddressEdit" address)}}
