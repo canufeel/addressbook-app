@@ -24,3 +24,12 @@ $color-grey: map-merge($color-grey, ('contrast':  $light-contrast-color));
 	@include display(flex);
 	@include flex-direction(column);
 }
+
+.button-container {
+	position: fixed;
+	bottom: 45px;
+	right: 70px;
+	height: 48px;
+	width: 48px;
+	z-index:15;
+}

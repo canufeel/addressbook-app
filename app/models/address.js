@@ -1,6 +1,8 @@
 import { Model } from 'ember-pouch';
 import attr from 'ember-data/attr';
 
+const {computed:{notEmpty}} = Ember;
+
 export default Model.extend({
 	addressee: attr('string'),
   sortname: attr('string', {defaultValue:''}),
@@ -20,7 +22,9 @@ export default Model.extend({
 	dateEdited: attr('date', {
 		defaultValue() { return new Date(); }
 	}),
-	dateDeactivated: attr('date')
+	dateDeactivated: attr('date'),
+	isCity: notEmpty('city'),
+	isZip: notEmpty('zip')
 });
 
 

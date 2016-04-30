@@ -1,8 +1,18 @@
+
+
+
+{{#unless isToggled}}
+	<div class="button-container">
+		{{#paper-button onClick=(action "toggleCreateNewAddress") iconButton=true raised=true accent=true disabled=isCreatingAddress}}{{paper-icon "add"}}{{/paper-button}}
+	</div>
+{{/unless}}
+
+
 <div class="addresses-container">
 	{{#liquid-unless mobileToggled class="sidebar-right-mobile"}}
 		{{#paper-card}}
 			{{#paper-card-content}}
-				{{#paper-button onClick=(action "toggleCreateNewAddress") iconButton=true raised=true accent=true disabled=isCreatingAddress}}{{paper-icon "add"}}{{/paper-button}}
+				
 				{{paper-input value=query label="Search" onChange=(action "updateQuery")}}
 			{{/paper-card-content}}
 		{{/paper-card}}
@@ -14,8 +24,8 @@
 							{{#paper-item onClick=(action "toggleAddressEdit" address)}}
 								<div class="md-list-item-text">
 									<h3>{{address.addressee}}</h3>
-									<h4>{{address.city}}</h4>
-									<p>{{address.sortname}}</p>
+									<h4>{{address.state}}{{#if address.isCity}}, {{address.city}}{{#if address.isZip}}, {{address.zip}}{{/if}}{{/if}}</h4>
+									<p>{{address.line1}}</p>
 								</div>
 								{{#paper-button iconButton=true onClick=(action "deleteAddress" address)}}
 									{{paper-icon "delete"}}
