@@ -17,6 +17,10 @@
 			{{#paper-card-content classNames="search-block"}}
 				
 				{{paper-input value=query label="Search" onChange=(action "updateQuery") flex=1}}
+				
+				<div class="csv-wrapper">
+					{{#paper-button onClick=(action "toCSV") raised=true accent=true}}Export CSV{{/paper-button}}
+				</div>
 			{{/paper-card-content}}
 		{{/paper-card}}
 		{{#paper-card}}

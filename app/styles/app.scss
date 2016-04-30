@@ -22,6 +22,14 @@ $color-grey: map-merge($color-grey, ('contrast':  $light-contrast-color));
 
 .search-block {
 	@include display(flex);
+	@include flex-direction(column);
+	.csv-wrapper {
+		@include display(flex);
+		@include flex-direction(row);
+		@include flex(1);
+		@include justify-content(stretch);
+		@include align-items(stretch);
+	}
 }
 
 .edit-form-content {

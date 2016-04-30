@@ -13,6 +13,8 @@ const {
 
 const {oneWay,or,and,lte,not} = computed;
 
+/* global Papa */
+
 export default Ember.Component.extend({
 	desktopWidth: computed({
 		get(){
@@ -142,6 +144,14 @@ export default Ember.Component.extend({
 		},
 		updateQuery(value){
 			set(this,'query',value);
+		},
+		toCSV(){
+			let addresses = get(this,'addressesFiltered');
+			let json = addresses.map(address=>{
+				return address.toJSON();
+			});
+			let csv = Papa.unparse(json);
+			window.open('data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
 		}
 
 	}

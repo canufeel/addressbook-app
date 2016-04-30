@@ -10,7 +10,8 @@
     "bootstrap": "^3.3.6",
     "hammer.js": "^2.0.8",
     "matchMedia": "0.2.0",
-    "bourbon": "4.2.6"
+    "bourbon": "4.2.6",
+    "papaparse": "^4.1.2"
   },
   "resolutions": {
     "ember": "^2.5.1"
