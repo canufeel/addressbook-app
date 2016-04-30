@@ -11,7 +11,7 @@ const {
 	computed,
 } = Ember;
 
-const {oneWay,or,and,lte} = computed;
+const {oneWay,or,and,lte,not} = computed;
 
 export default Ember.Component.extend({
 	desktopWidth: computed({
@@ -22,7 +22,10 @@ export default Ember.Component.extend({
 	mobile: lte('desktopWidth',600),
 	isToggled: or('isEditingAddress','isCreatingAddress'),
 	mobileToggled: and('mobile','isToggled'),
-
+	isNotToggled: not('isToggled'),
+	notDeleting: not('isDeleting'),
+	isDeletingNotToggled: and('isDeleting','isNotToggled'),
+	notToggledNotDeleting: and('notDeleting','isNotToggled'),
 
 	store: Ember.inject.service(),
 	classNames: ['address-main'],
@@ -113,10 +116,20 @@ export default Ember.Component.extend({
 				this.toggleProperty('isEditingAddress');
 			}
 		},
-		deleteAddress(address){
+		confirmDelete(){
+			let address = get(this,'addressUnderDeletion');
 			address.destroyRecord();
 			let store = get(this,'store');
 			set(this,'_addresses',store.peekAll('address'));
+			set(this,'isDeleting',false);
+		},
+		cancelDelete(){
+			set(this,'addressUnderDeletion',null);
+			set(this,'isDeleting',false);
+		},
+		deleteAddress(address){
+			set(this,'addressUnderDeletion',address);
+			set(this,'isDeleting',true);
 		},
 		submitEditedAddress(data){
 			let selectedAddress = get(this,'selectedAddress');

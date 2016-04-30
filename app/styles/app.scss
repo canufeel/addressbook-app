@@ -29,6 +29,15 @@ $color-grey: map-merge($color-grey, ('contrast':  $light-contrast-color));
 	@include flex-direction(column);
 }
 
+.delete-container {
+	position: fixed;
+	bottom: 90px;
+	right: 70px;
+	z-index: 15;
+	height: 40px;
+	width: 200px;
+}
+
 .button-container {
 	position: fixed;
 	bottom: 25px;
