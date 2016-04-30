@@ -4,9 +4,13 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
-    // Add options here
+    SRI: {
+            enabled: false
+        }
   });
 
+
+  app.import('bower_components/papaparse/papaparse.min.js');
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //
@@ -19,10 +23,6 @@ module.exports = function(defaults) {
   // modules that you would like to import into your application
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
-
-  app.import('bower_components/bootstrap/dist/css/bootstrap.css');
-  app.import('bower_components/bootstrap/dist/css/bootstrap-theme.css');
-  app.import('bower_components/bootstrap/dist/js/bootstrap.js');
 
   return app.toTree();
 };

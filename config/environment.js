@@ -7,8 +7,8 @@ module.exports = function(environment) {
     baseURL: '/',
     locationType: 'auto',
     emberPouch: {
-      localDb: 'dentone-addressbook-local',
-      remoteDB: 'https://bothentsemetleendishompl@mowadmin.cloudant.com/dentone-addressbook'
+      localDb: 'dentone-addressbook',
+      remoteDb: 'https://wasilleptichandfurningio:6c01f93f266bb3cf6dfd579de0e8e51354ee3bf3@dentone.cloudant.com/addressbook/'
     },
     EmberENV: {
       FEATURES: {
@@ -16,6 +16,16 @@ module.exports = function(environment) {
         // e.g. 'with-controller': true
       }
     },
+    contentSecurityPolicy:{
+        'default-src': "'none'",
+        'script-src': "'self' 'unsafe-inline'",
+        'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
+        'font-src': "'self' fonts.gstatic.com",
+        'connect-src': "'self' https://dentone.cloudant.com/",
+        'img-src': "'self' data:",
+        'media-src': "'self'"
+    },
+
 
     APP: {
       // Here you can pass flags/options to your application instance

@@ -5,28 +5,14 @@ import Ember from 'ember';
 
 const { assert, isEmpty } = Ember;
 
-function createDb() {
-  let localDb = config.emberPouch.localDb;
+var remote = new PouchDB(config.emberPouch.remoteDb);
+var db = new PouchDB(config.emberPouch.localDb);
 
-  assert('emberPouch.localDb must be set', !isEmpty(localDb));
-
-  let db = new PouchDB(localDb);
-
-  if (config.emberPouch.remoteDb) {
-    let remoteDb = new PouchDB(config.emberPouch.remoteDb);
-
-    db.sync(remoteDb, {
-      live: true,
-      retry: true
-    });
-  }
-
-  return db;
-}
+db.sync(remote, {
+   live: true,   // do a live, ongoing sync
+   retry: true   // retry if the connection is lost
+});
 
 export default Adapter.extend({
-  init() {
-    this._super(...arguments);
-    this.set('db', createDb());
-  }
+  db:db
 });

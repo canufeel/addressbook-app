@@ -1,0 +1,62 @@
+{{#if notToggledNotDeleting}}
+	<div class="button-container">
+		{{#paper-button onClick=(action "toggleCreateNewAddress") iconButton=true raised=true accent=true}}{{paper-icon "add"}}{{/paper-button}}
+	</div>
+{{/if}}
+{{#if isDeletingNotToggled}}
+	<div class="delete-container">
+		{{#paper-button onClick=(action "confirmDelete") raised=true warn=true}}Delete{{/paper-button}}
+		{{#paper-button onClick=(action "cancelDelete") raised=true accent=true}}Cancel{{/paper-button}}
+	</div>
+{{/if}}
+
+
+<div class="addresses-container">
+	{{#liquid-unless mobileToggled class="sidebar-right-mobile"}}
+		{{#paper-card}}
+			{{#paper-card-content classNames="search-block"}}
+				
+				{{paper-input value=query label="Search" onChange=(action "updateQuery") flex=1}}
+				
+				<div class="csv-wrapper">
+					{{#paper-button onClick=(action "toCSV") raised=true accent=true}}Export CSV{{/paper-button}}
+				</div>
+			{{/paper-card-content}}
+		{{/paper-card}}
+		{{#paper-card}}
+			{{#paper-card-content}}
+				{{#paper-list flex=1}}
+					{{#each addressesFiltered as |address|}}
+						{{#if address.isActive}}
+							{{#paper-item onClick=(action "toggleAddressEdit" address)}}
+								<div class="md-list-item-text">
+									<h3>{{address.addressee}}</h3>
+									<h4>{{address.state}}{{#if address.isCity}}, {{address.city}}{{#if address.isZip}}, {{address.zip}}{{/if}}{{/if}}</h4>
+									<p>{{address.line1}}</p>
+								</div>
+								{{#paper-button iconButton=true onClick=(action "deleteAddress" address)}}
+									{{paper-icon "delete"}}
+								{{/paper-button}}
+							{{/paper-item}}
+							{{paper-divider}}
+						{{/if}}
+					{{/each}}
+				{{/paper-list}}
+			{{/paper-card-content}}
+		{{/paper-card}}
+	{{else}}
+		{{#if isCreatingAddress}}
+			{{addresses/address-edit create=true cancelAction=(action "toggleCreateNewAddress") createAction=(action "createNewAddress") classNames="addresses-edit"}}
+		{{else if isEditingAddress}}
+			{{addresses/address-edit address=selectedAddressOneWay create=false cancelAction=(action "toggleAddressEdit") createAction=(action "submitEditedAddress") classNames="addresses-edit"}}
+		{{/if}}
+	{{/liquid-unless}}
+</div>
+{{#unless mobile}}
+	{{#liquid-if isCreatingAddress class="sidebar-right"}}
+		{{addresses/address-edit create=true cancelAction=(action "toggleCreateNewAddress") createAction=(action "createNewAddress") classNames="addresses-edit"}}
+	{{/liquid-if}}
+	{{#liquid-if isEditingAddress class="sidebar-right"}}
+			{{addresses/address-edit address=selectedAddressOneWay create=false cancelAction=(action "toggleAddressEdit") createAction=(action "submitEditedAddress") classNames="addresses-edit"}}
+	{{/liquid-if}}
+{{/unless}}

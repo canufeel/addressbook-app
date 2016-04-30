@@ -1,0 +1,16 @@
+{{#paper-card}}
+	{{#paper-card-content class="edit-form-content"}}
+		<h2>{{labelForComponent}}</h2>
+		{{paper-input required=true label="Addressee"  value=address.addressee onChange=(action "updateValue" "addressee")}}
+		{{paper-input label="sortname" value=address.sortname onChange=(action "updateValue" "sortname")}}
+		{{paper-input label="Line1" required=true value=address.line1 onChange=(action "updateValue" "line1")}}
+		{{paper-input label="Line2" value=address.line2 onChange=(action "updateValue" "line2")}}
+		{{paper-input label="City" value=address.city onChange=(action "updateValue" "city")}}
+		{{paper-input label="state" value=address.state onChange=(action "updateValue" "state")}}
+		{{paper-input label="Zip" value=address.zip onChange=(action "updateValue" "zip")}}
+		{{paper-input label="Country" value=address.country onChange=(action "updateValue" "country")}}
+		{{#paper-button disabled=isDisabledSubmit onClick=(action attrs.createAction data) accent=true raised=true}}{{submitLabel}}{{/paper-button}}
+		{{#paper-button onClick=attrs.cancelAction}}Cancel{{/paper-button}}
+	{{/paper-card-content}}
+{{/paper-card}}
+

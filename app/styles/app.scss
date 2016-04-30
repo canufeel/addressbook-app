@@ -1,0 +1,56 @@
+$primary: "grey";
+$accent: "blue";
+@import "color-palette";
+$color-grey: map-merge($color-grey, ('contrast':  $light-contrast-color));
+@import 'ember-paper';
+@import 'bourbon';
+
+
+.address-main {
+	@include display(flex);
+	@include flex-direction();
+	@include align-items(stretch);
+	.addresses-container {
+		@include flex(6);
+	}
+	.addresses-edit {
+		min-width: 400px;
+
+	}
+
+}
+
+.search-block {
+	@include display(flex);
+	@include flex-direction(column);
+	.csv-wrapper {
+		@include display(flex);
+		@include flex-direction(row);
+		@include flex(1);
+		@include justify-content(stretch);
+		@include align-items(stretch);
+	}
+}
+
+.edit-form-content {
+	@include display(flex);
+	@include flex-direction(column);
+}
+
+.delete-container {
+	position: fixed;
+	bottom: 90px;
+	right: 70px;
+	z-index: 15;
+	height: 40px;
+	width: 200px;
+}
+
+.button-container {
+	position: fixed;
+	bottom: 25px;
+	right: 70px;
+	height: 48px;
+	width: 48px;
+	z-index:15;
+}
