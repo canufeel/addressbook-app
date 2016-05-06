@@ -253,7 +253,7 @@ var runningTests = false;
 
   requirejs.clear();
 
-  if (typeof module !== 'undefined') {
+  if (typeof exports === 'object' && typeof module === 'object' && module.exports) {
     module.exports = { require: require, define: define };
   }
 })(this);
@@ -106424,11 +106424,8 @@ define('ember-paper/components/paper-button', ['exports', 'ember', 'ember-paper/
     type: 'button',
     tagName: 'button',
     classNames: ['paper-button', 'md-default-theme', 'md-button'],
-    classNameBindings: ['raised:md-raised', 'iconButton:md-icon-button', 'isSecondary:md-secondary'],
+    classNameBindings: ['raised:md-raised', 'iconButton:md-icon-button'],
 
-    // Paper item secondary container class
-    isSecondary: false,
-    isSecondaryHandlersSet: false,
     // Ripple Overrides
     rippleContainerSelector: null,
     fitRipple: computed.readOnly('iconButton'),
@@ -106606,11 +106603,7 @@ define('ember-paper/components/paper-checkbox', ['exports', 'ember', 'ember-pape
   exports['default'] = _emberPaperComponentsBaseFocusable['default'].extend(_emberPaperMixinsRippleMixin['default'], _emberPaperMixinsProxiableMixin['default'], _emberPaperMixinsColorMixin['default'], {
     tagName: 'md-checkbox',
     classNames: ['md-checkbox', 'md-default-theme'],
-    classNameBindings: ['value:md-checked', 'isSecondary:md-secondary'],
-
-    // Paper item secondary container class
-    isSecondary: false,
-    isSecondaryHandlersSet: false,
+    classNameBindings: ['value:md-checked'],
 
     /* Ripple Overrides */
     rippleContainerSelector: '.md-container',
@@ -107511,13 +107504,10 @@ define('ember-paper/components/paper-item', ['exports', 'ember', 'ember-paper/mi
   var _get = _ember['default'].get;
   var set = _ember['default'].set;
   var isEmpty = _ember['default'].isEmpty;
-  var isEqual = _ember['default'].isEqual;
   var computed = _ember['default'].computed;
-  var _Ember$run = _ember['default'].run;
-  var scheduleOnce = _Ember$run.scheduleOnce;
-  var later = _Ember$run.later;
-  var not = computed.not;
+  var later = _ember['default'].run.later;
   var bool = computed.bool;
+  var notEmpty = computed.notEmpty;
 
   exports['default'] = _ember['default'].Component.extend(_emberPaperMixinsRippleMixin['default'], _emberPaperMixinsProxyMixin['default'], {
     tagName: 'md-list-item',
@@ -107527,7 +107517,6 @@ define('ember-paper/components/paper-item', ['exports', 'ember', 'ember-paper/mi
     center: false,
     dimBackground: true,
     outline: false,
-    noink: not('shouldBeClickable'),
 
     classNameBindings: ['shouldBeClickable:md-clickable', 'hasProxiedComponent:md-proxy-focus'],
     attributeBindings: ['role', 'tabindex'],
@@ -107536,13 +107525,15 @@ define('ember-paper/components/paper-item', ['exports', 'ember', 'ember-paper/mi
 
     hasProxiedComponent: bool('proxiedComponents.length'),
 
+    hasPrimaryAction: notEmpty('onClick'),
+
     hasSecondaryAction: computed('secondaryItem', 'onClick', {
       get: function get() {
         var secondaryItem = _get(this, 'secondaryItem');
         if (!isEmpty(secondaryItem)) {
-          var hasClickAction = _get(this, 'onClick') && this.isProxiedComponent(secondaryItem);
-          var isCheckbox = _get(secondaryItem, 'onChange') && this.isProxiedComponent(secondaryItem);
-          return secondaryItem && (secondaryItem.action || hasClickAction || isCheckbox);
+          var hasClickAction = _get(secondaryItem, 'onClick');
+          var hasChangeAction = _get(secondaryItem, 'onChange');
+          return hasClickAction || hasChangeAction;
         } else {
           return false;
         }
@@ -107567,71 +107558,70 @@ define('ember-paper/components/paper-item', ['exports', 'ember', 'ember-paper/mi
     setupProxiedComponent: function setupProxiedComponent() {
       var _this = this;
 
-      scheduleOnce('afterRender', this, function () {
-        var tEl = _this.$();
-        var proxiedComponents = _get(_this, 'proxiedComponents');
-        // buttons and md-checkboxes should have .md-secondary class
-        proxiedComponents.forEach(function (component) {
-          if (isEqual(_get(component, 'tagName'), 'button') || isEqual(_get(component, 'tagName'), 'md-checkbox')) {
-            if (!_get(component, 'isSecondary')) {
-              set(component, 'isSecondary', true);
+      var tEl = this.$();
+      var proxiedComponents = _get(this, 'proxiedComponents');
+      proxiedComponents.forEach(function (component) {
+        var isProxyHandlerSet = _get(component, 'isProxyHandlerSet');
+        // we run init only once for each component.
+        if (!isProxyHandlerSet) {
+          (function () {
+            // Allow proxied component to propagate ripple hammer event
+            if (!_get(component, 'onClick') && !_get(component, 'propagateRipple')) {
+              set(component, 'propagateRipple', true);
             }
-          }
-        });
-        // Secondary item has separate action.
-        // Unregister so we don't proxy it.
-        if (_get(_this, 'hasSecondaryAction')) {
-          var bubbles = _get(_this, 'secondaryItem.bubbles');
-          if (isEmpty(bubbles)) {
-            set(_this, 'secondaryItem.bubbles', false);
-            _this.unregister(_get(_this, 'secondaryItem'));
-          }
-        } else {
-          debugger;
-        }
-        // Allow proxied component to propagate ripple hammer event
-        proxiedComponents.forEach(function (component) {
-          if (!_get(component, 'onClick') && !_get(component, 'propagateRipple')) {
-            set(component, 'propagateRipple', true);
-          }
-        });
-        proxiedComponents.forEach(function (view) {
-          var isSecondaryHandlerSet = _get(view, 'isSecondaryHandlerSet');
-          if (isEmpty(isSecondaryHandlerSet)) {
-            (function () {
-              var el = view.$();
-              set(_this, 'mouseActive', false);
-              el.on('mousedown', function () {
-                set(_this, 'mouseActive', true);
-                later(function () {
-                  set(_this, 'mouseActive', false);
-                }, 100);
+            // ripple
+            var el = component.$();
+            set(_this, 'mouseActive', false);
+            el.on('mousedown', function () {
+              set(_this, 'mouseActive', true);
+              later(function () {
+                set(_this, 'mouseActive', false);
+              }, 100);
+            });
+            el.on('focus', function () {
+              if (!_get(_this, 'mouseActive')) {
+                tEl.addClass('md-focused');
+              }
+              el.on('blur', function proxyOnBlur() {
+                tEl.removeClass('md-focused');
+                el.off('blur', proxyOnBlur);
               });
-              el.on('focus', function () {
-                if (!_get(_this, 'mouseActive')) {
-                  tEl.addClass('md-focused');
+            });
+            // If we don't have primary action then
+            // no need to bubble
+            if (!_get(_this, 'hasPrimaryAction')) {
+              var bubbles = _get(component, 'bubbles');
+              if (isEmpty(bubbles)) {
+                set(component, 'bubbles', false);
+              }
+            } else if (_get(proxiedComponents, 'length')) {
+              // primary action exists. Make sure child
+              // that has separate action won't bubble.
+              proxiedComponents.forEach(function (component) {
+                var hasClickAction = _get(component, 'onClick');
+                var hasChangeAction = _get(component, 'onChange');
+                if (hasClickAction || hasChangeAction) {
+                  var bubbles = _get(component, 'bubbles');
+                  if (isEmpty(bubbles)) {
+                    set(component, 'bubbles', false);
+                  }
                 }
-                el.on('blur', function proxyOnBlur() {
-                  tEl.removeClass('md-focused');
-                  el.off('blur', proxyOnBlur);
-                });
               });
-              set(view, 'isSecondaryHandlerSet', true);
-            })();
-          }
-        });
+            }
+            // Init complete. We don't want it to run again
+            // for that particular component.
+            set(component, 'isProxyHandlerSet', true);
+          })();
+        }
       });
-    },
-
-    didInsertElement: function didInsertElement() {
-      this._super.apply(this, arguments);
-      this.addObserver('hasProxiedComponent', this, 'setupProxiedComponent');
     },
 
     actions: {
       buttonAction: function buttonAction() {
+        var _this2 = this;
+
         this.get('proxiedComponents').forEach(function (component) {
-          if (component.processProxy) {
+          if (component.processProxy && !_get(component, 'disabled') && _get(component, 'bubbles') | !_get(_this2, 'hasPrimaryAction')) {
             component.processProxy();
           }
         });
@@ -107675,10 +107665,7 @@ define('ember-paper/components/paper-menu-abstract', ['exports', 'ember'], funct
 
     setOpen: function setOpen(newState) {
       this.set('isOpen', newState);
-      var action = this.get(newState ? 'onOpenMenu' : 'onCloseMenu');
-      if (action) {
-        action();
-      }
+      this.sendAction(newState ? 'onOpenMenu' : 'onCloseMenu');
     },
 
     actions: {
@@ -109148,6 +109135,7 @@ define('ember-paper/components/paper-switch', ['exports', 'ember', 'ember-paper/
 
   var assert = _ember['default'].assert;
   var computed = _ember['default'].computed;
+  var get = _ember['default'].get;
   var run = _ember['default'].run;
   var htmlSafe = _ember['default'].String.htmlSafe;
   var inject = _ember['default'].inject;
@@ -109159,6 +109147,7 @@ define('ember-paper/components/paper-switch', ['exports', 'ember', 'ember-paper/
     classNames: ['paper-switch', 'md-default-theme'],
     classNameBindings: ['value:md-checked', 'dragging:md-dragging'],
     toggle: true,
+    constants: inject.service(),
 
     /* Ripple Overrides */
     rippleContainerSelector: '.md-thumb',
@@ -109169,8 +109158,6 @@ define('ember-paper/components/paper-switch', ['exports', 'ember', 'ember-paper/
     value: false,
     disabled: false,
     dragging: false,
-
-    constants: inject.service(),
 
     thumbContainerStyle: computed('dragging', 'dragAmount', function () {
       if (!this.get('dragging')) {
@@ -109214,20 +109201,24 @@ define('ember-paper/components/paper-switch', ['exports', 'ember', 'ember-paper/
     },
 
     _setupSwitch: function _setupSwitch() {
-      this.set('switchWidth', this.$('.md-bar').width());
+      this.set('switchWidth', this.$('.md-thumb-container').innerWidth());
 
-      // Enable dragging the switch
       var switchContainer = this.$('.md-container').get(0);
-      var switchContainerHammer = new Hammer(switchContainer);
-      this._switchContainerHammer = switchContainerHammer;
-      switchContainerHammer.get('pan').set({ threshold: 1 });
-      switchContainerHammer.on('panstart', run.bind(this, this._dragStart));
-      switchContainerHammer.on('panmove', run.bind(this, this._drag));
-      switchContainerHammer.on('panend', run.bind(this, this._dragEnd));
+      var switchHammer = new Hammer(switchContainer);
+      this._switchContainerHammer = switchHammer;
 
-      var switchHammer = new Hammer(this.element);
-      this._switchHammer = switchHammer;
-      switchHammer.on('tap', run.bind(this, this._dragEnd));
+      // Enable dragging the switch container
+      switchHammer.get('pan').set({ threshold: 1 });
+      switchHammer.on('panstart', run.bind(this, this._dragStart)).on('panmove', run.bind(this, this._drag)).on('panend', run.bind(this, this._dragEnd));
+
+      // Enable tapping gesture on the switch
+      this._switchHammer = new Hammer(this.element);
+      this._switchHammer.on('tap', run.bind(this, this._dragEnd));
+      this.$('.md-container').on('click', run.bind(this, this._handleNativeClick));
+    },
+
+    _handleNativeClick: function _handleNativeClick() {
+      return get(this, 'bubbles');
     },
 
     _teardownSwitch: function _teardownSwitch() {
@@ -109259,6 +109250,13 @@ define('ember-paper/components/paper-switch', ['exports', 'ember', 'ember-paper/
         }
         this.set('dragging', false);
         this.set('dragAmount', null);
+      }
+    },
+
+    focusIn: function focusIn() {
+      // Focusing in w/o being pressed should use the default behavior
+      if (!this.get('pressed')) {
+        this._super.apply(this, arguments);
       }
     },
 
@@ -109374,6 +109372,10 @@ define('ember-paper/mixins/flex-mixin', ['exports', 'ember'], function (exports,
 define('ember-paper/mixins/proxiable-mixin', ['exports', 'ember', 'ember-paper/mixins/proxy-mixin'], function (exports, _ember, _emberPaperMixinsProxyMixin) {
   'use strict';
 
+  var computed = _ember['default'].computed;
+  var _get = _ember['default'].get;
+  var isEmpty = _ember['default'].isEmpty;
+
   exports['default'] = _ember['default'].Mixin.create({
     init: function init() {
       this._super.apply(this, arguments);
@@ -109387,7 +109389,20 @@ define('ember-paper/mixins/proxiable-mixin', ['exports', 'ember', 'ember-paper/m
       }
     },
 
-    processProxy: null
+    processProxy: null,
+
+    // Paper item secondary container class
+    isSecondary: computed('class', {
+      get: function get() {
+        var cls = _get(this, 'class');
+        if (!isEmpty(cls)) {
+          return cls.indexOf('md-secondary') !== -1;
+        } else {
+          return false;
+        }
+      }
+    }),
+    isProxyHandlerSet: false
   });
 });
 define('ember-paper/mixins/proxy-mixin', ['exports', 'ember'], function (exports, _ember) {
@@ -109400,13 +109415,8 @@ define('ember-paper/mixins/proxy-mixin', ['exports', 'ember'], function (exports
     register: function register(component) {
       if (!component.get('skipProxy')) {
         this.get('proxiedComponents').addObject(component);
+        this.setupProxiedComponent();
       }
-    },
-    unregister: function unregister(component) {
-      this.get('proxiedComponents').removeObject(component);
-    },
-    isProxiedComponent: function isProxiedComponent(component) {
-      return this.get('proxiedComponents').contains(component);
     }
   });
 });
